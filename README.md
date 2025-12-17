@@ -126,12 +126,35 @@ chmod +x startup.sh shutdown.sh restart.sh
 chmod +x scripts/*.sh
 ```
 
-### Passo 3: Atualize o seu docker compose e inicie todos os serviços
+### Passo 3: Verifique a versão do Docker Compose
+
+Este projeto requer Docker Compose V2 (versão 2.0 ou superior).
 
 ```bash
-docker compose up -d
+# Verificar versão
+docker compose version
+
+# Se não tiver Docker Compose V2, instale:
 sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
+```
+
+### Passo 4: Limpe containers antigos (se houver)
+
+Se você já executou o projeto antes ou tem containers com nomes conflitantes:
+
+```bash
+# Remover containers antigos
+docker rm -f spark-worker spark-master airflow-scheduler airflow-webserver airflow-init minio airflow-postgres 2>/dev/null || true
+
+# OU fazer limpeza completa (CUIDADO: remove TODOS os dados)
+docker compose down -v
+rm -rf data/
+```
+
+### Passo 5: Inicie todos os serviços
+
+```bash
 ./startup.sh
 ```
 
@@ -143,9 +166,11 @@ Este script irá:
 5. ✅ Criar o usuário admin do Airflow
 6. ✅ Mostrar o status dos serviços
 
-**Tempo estimado**: 2-3 minutos para primeira execução
+**Tempo estimado**: 2-5 minutos para primeira execução (download de imagens)
 
-### Passo 4: Configure os buckets no MinIO (opcional)
+> **Nota importante**: Este projeto usa a imagem `apache/spark:3.5.0` em vez de `bitnami/spark` devido a melhor disponibilidade em diferentes ambientes (WSL, Cloud Shell, etc.).
+
+### Passo 6: Configure os buckets no MinIO (opcional)
 
 ```bash
 ./scripts/setup-minio.sh
@@ -273,6 +298,46 @@ with DAG(
 A DAG aparecerá automaticamente na interface do Airflow em alguns segundos.
 
 ## 🔧 Troubleshooting
+
+### Problema: Erro "container name is already in use"
+
+Este erro ocorre quando há containers antigos com o mesmo nome.
+
+```bash
+# Solução: Remover containers conflitantes
+docker rm -f spark-worker spark-master airflow-scheduler airflow-webserver airflow-init minio airflow-postgres
+
+# Depois iniciar novamente
+docker compose up -d
+```
+
+### Problema: Erro "version is unsupported" no docker-compose.yml
+
+```bash
+# Verificar versão do Docker Compose
+docker compose version
+
+# Se estiver usando docker-compose V1 (antigo), atualize para V2
+# OU use o comando: docker compose (sem hífen)
+```
+
+### Problema: Erro "failed to resolve reference bitnami/spark"
+
+Este projeto já está configurado para usar `apache/spark:3.5.0` que é mais amplamente disponível. Se mesmo assim tiver problemas:
+
+```bash
+# Limpar cache de imagens
+docker system prune -a
+
+# Tentar baixar a imagem manualmente
+docker pull apache/spark:3.5.0
+docker pull apache/airflow:2.8.0-python3.10
+docker pull minio/minio:latest
+docker pull postgres:13
+
+# Depois executar
+./startup.sh
+```
 
 ### Problema: Containers não iniciam
 
