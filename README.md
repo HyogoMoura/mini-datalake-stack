@@ -102,7 +102,8 @@ mini-datalake-stack/
 │
 ├── scripts/                 # Scripts auxiliares
 │   ├── check-status.sh      # Verificar status dos serviços
-│   └── setup-minio.sh       # Configurar buckets no MinIO
+│   ├── setup-minio.sh       # Configurar buckets no MinIO
+│   └── setup-airflow.sh     # Configurar Airflow providers e conexões
 │
 └── data/                    # Dados persistidos (criado automaticamente)
     ├── minio/               # Armazenamento MinIO
@@ -161,16 +162,19 @@ rm -rf data/
 Este script irá:
 1. ✅ Verificar se o Docker está rodando
 2. ✅ Criar os diretórios de dados necessários
-3. ✅ Subir todos os containers
-4. ✅ Inicializar o banco de dados do Airflow
-5. ✅ Criar o usuário admin do Airflow
-6. ✅ Mostrar o status dos serviços
+3. ✅ Configurar permissões corretas
+4. ✅ Subir todos os containers
+5. ✅ Inicializar o banco de dados do Airflow
+6. ✅ Criar o usuário admin do Airflow
+7. ✅ Mostrar o status dos serviços
 
 **Tempo estimado**: 2-5 minutos para primeira execução (download de imagens)
 
 > **Nota importante**: Este projeto usa a imagem `apache/spark:3.5.0` em vez de `bitnami/spark` devido a melhor disponibilidade em diferentes ambientes (WSL, Cloud Shell, etc.).
 
-### Passo 6: Configure os buckets no MinIO (opcional)
+### Passo 6: Configure os buckets no MinIO
+
+Após os serviços estarem rodando, configure os buckets do Data Lake:
 
 ```bash
 ./scripts/setup-minio.sh
@@ -181,6 +185,22 @@ Este script cria os buckets padrão para as camadas do Data Lake:
 - `bronze` - Dados ingeridos
 - `silver` - Dados refinados
 - `gold` - Dados analíticos
+
+### Passo 7: Configure o Airflow
+
+Configure providers e conexões do Airflow:
+
+```bash
+./scripts/setup-airflow.sh
+```
+
+Este script irá:
+- ✅ Instalar providers do Airflow (Spark, S3/MinIO, Postgres)
+- ✅ Criar conexão com MinIO (minio_conn)
+- ✅ Criar conexão com Spark (spark_default)
+- ✅ Verificar DAGs disponíveis
+
+**Pronto!** Seu ambiente está completamente configurado e pronto para uso.
 
 ## 🎮 Como Usar
 

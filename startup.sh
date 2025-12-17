@@ -18,6 +18,10 @@ echo ""
 echo "📁 Creating data directories..."
 mkdir -p data/minio data/postgres data/spark data/logs
 
+# Fix permissions for Airflow logs
+echo "🔧 Setting up permissions..."
+chmod -R 777 data/logs
+
 # Start services
 echo "🐳 Starting Docker containers..."
 docker compose up -d
