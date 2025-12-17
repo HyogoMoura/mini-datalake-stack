@@ -20,7 +20,7 @@ mkdir -p data/minio data/postgres data/spark data/logs
 
 # Start services
 echo "🐳 Starting Docker containers..."
-docker-compose up -d
+docker compose up -d
 
 echo ""
 echo "⏳ Waiting for services to be healthy..."
@@ -29,7 +29,7 @@ sleep 10
 # Check service status
 echo ""
 echo "📊 Service Status:"
-docker-compose ps
+docker compose ps
 
 echo ""
 echo "======================================"
@@ -46,7 +46,7 @@ echo "  - Airflow Web UI:   http://localhost:8081"
 echo "    User: admin / Pass: admin"
 echo ""
 echo "📝 Useful Commands:"
-echo "  - View logs:        docker-compose logs -f [service-name]"
+echo "  - View logs:        docker compose logs -f [service-name]"
 echo "  - Stop all:         ./shutdown.sh"
 echo "  - Restart:          ./restart.sh"
 echo ""

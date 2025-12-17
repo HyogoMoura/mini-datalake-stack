@@ -14,7 +14,7 @@ sleep 10
 
 echo ""
 echo "📊 Service Status:"
-docker-compose ps
+docker compose ps
 
 echo ""
 echo "✅ Restart complete!"

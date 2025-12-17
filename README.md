@@ -126,9 +126,12 @@ chmod +x startup.sh shutdown.sh restart.sh
 chmod +x scripts/*.sh
 ```
 
-### Passo 3: Inicie todos os serviços
+### Passo 3: Atualize o seu docker compose e inicie todos os serviços
 
 ```bash
+docker compose up -d
+sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
 ./startup.sh
 ```
 

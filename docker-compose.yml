@@ -24,7 +24,7 @@ services:
 
   # Spark Master
   spark-master:
-    image: bitnami/spark:3.5.0
+    image: bitnami/spark:3.5.1
     container_name: spark-master
     ports:
       - "8080:8080"      # Spark Master Web UI
