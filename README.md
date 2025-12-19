@@ -114,9 +114,10 @@ mini-datalake-stack/
 
 ## 🚀 Instalação e Configuração
 
-### Passo 1: Navegue até o diretório do projeto
+### Passo 1: Clonar o projeto e Navegar até o diretório do projeto
 
 ```bash
+git clone https://github.com/paulomnasc/mini-datalake-stack.git
 cd /home/<usuario-logado>/datalake-air-flow/mini-datalake-stack
 ```
 
