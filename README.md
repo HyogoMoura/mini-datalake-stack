@@ -128,33 +128,7 @@ chmod +x startup.sh shutdown.sh restart.sh
 chmod +x scripts/*.sh
 ```
 
-### Passo 3: Verifique a versão do Docker Compose
-
-Este projeto requer Docker Compose V2 (versão 2.0 ou superior).
-
-```bash
-# Verificar versão
-docker compose version
-
-# Se não tiver Docker Compose V2, instale:
-sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-```
-
-### Passo 4: Limpe containers antigos (se houver)
-
-Se você já executou o projeto antes ou tem containers com nomes conflitantes:
-
-```bash
-# Remover containers antigos
-docker rm -f spark-worker spark-master airflow-scheduler airflow-webserver airflow-init minio airflow-postgres 2>/dev/null || true
-
-# OU fazer limpeza completa (CUIDADO: remove TODOS os dados)
-docker compose down -v
-rm -rf data/
-```
-
-### Passo 5: Inicie todos os serviços
+### Passo 3: Inicie todos os serviços
 
 ```bash
 ./startup.sh
@@ -173,7 +147,7 @@ Este script irá:
 
 > **Nota importante**: Este projeto usa a imagem `apache/spark:3.5.0` em vez de `bitnami/spark` devido a melhor disponibilidade em diferentes ambientes (WSL, Cloud Shell, etc.).
 
-### Passo 6: Configure os buckets no MinIO
+### Passo 4: Configure os buckets no MinIO
 
 Após os serviços estarem rodando, configure os buckets do Data Lake:
 
@@ -186,6 +160,35 @@ Este script cria os buckets padrão para as camadas do Data Lake:
 - `bronze` - Dados ingeridos
 - `silver` - Dados refinados
 - `gold` - Dados analíticos
+
+
+### Passo 5: [OPCIONAL] Verifique a versão do Docker Compose
+
+Este projeto requer Docker Compose V2 (versão 2.0 ou superior).
+
+```bash
+# Verificar versão
+docker compose version
+
+# Se não tiver Docker Compose V2, instale:
+sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+```
+
+### Passo 6: [OPCIONAL] Limpe containers antigos (se houver)
+
+Se você já executou o projeto antes ou tem containers com nomes conflitantes:
+
+```bash
+# Remover containers antigos
+docker rm -f spark-worker spark-master airflow-scheduler airflow-webserver airflow-init minio airflow-postgres 2>/dev/null || true
+
+# OU fazer limpeza completa (CUIDADO: remove TODOS os dados)
+docker compose down -v
+rm -rf data/
+```
+
+
 
 ### Passo 7: Configure o Airflow
 
