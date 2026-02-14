@@ -17,10 +17,10 @@ docker run --rm --network mini-datalake-stack_datalake-network \
   minio/mc:latest \
   -c "
     mc alias set myminio http://minio:9000 minioadmin minioadmin123 && \
-    mc mb myminio/raw --ignore-existing && \
-    mc mb myminio/bronze --ignore-existing && \
-    mc mb myminio/silver --ignore-existing && \
-    mc mb myminio/gold --ignore-existing && \
+    mc mb myminio/1_raw --ignore-existing && \
+    mc mb myminio/2_bronze --ignore-existing && \
+    mc mb myminio/3_silver --ignore-existing && \
+    mc mb myminio/4_gold --ignore-existing && \
     echo '' && \
     echo '📋 Buckets created:' && \
     mc ls myminio
